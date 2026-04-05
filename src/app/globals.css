@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --blush: #f5e6e0;
+  --rose: #d4a0a0;
+  --deep-rose: #c27878;
+  --sage: #a8b5a0;
+  --deep-sage: #7a8c6e;
+  --cream: #faf7f2;
+  --gold: #c9a96e;
+  --dark: #3d3232;
+}
+
+@theme inline {
+  --color-blush: var(--blush);
+  --color-rose: var(--rose);
+  --color-deep-rose: var(--deep-rose);
+  --color-sage: var(--sage);
+  --color-deep-sage: var(--deep-sage);
+  --color-cream: var(--cream);
+  --color-gold: var(--gold);
+  --color-dark: var(--dark);
+}
+
+body {
+  background: var(--cream);
+  color: var(--dark);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Floral corner decorations */
+.floral-corner-tl::before,
+.floral-corner-tr::before,
+.floral-corner-bl::before,
+.floral-corner-br::before {
+  content: '';
+  position: fixed;
+  width: 180px;
+  height: 180px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.15;
+}
+
+/* Upload button pulse animation */
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 160, 160, 0.4); }
+  50% { transform: scale(1.02); box-shadow: 0 0 0 20px rgba(212, 160, 160, 0); }
+}
+
+.upload-pulse {
+  animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+/* Petal fall animation */
+@keyframes petal-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+.petal {
+  animation: petal-fall linear infinite;
+}
+
+/* Success checkmark */
+@keyframes check-draw {
+  0% { stroke-dashoffset: 50; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.check-animate {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: check-draw 0.6s ease forwards 0.2s;
+}
+
+/* Fade in */
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.8s ease forwards;
+}
+
+/* Progress bar */
+@keyframes progress-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.progress-shimmer {
+  background: linear-gradient(90deg, var(--rose) 0%, var(--gold) 50%, var(--rose) 100%);
+  background-size: 200% 100%;
+  animation: progress-shimmer 1.5s ease-in-out infinite;
+}
