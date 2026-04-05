@@ -1,4 +1,4 @@
-# Wedding Photo Dump — James & Anna
+# Wedding Photo Dump — Aarti & Anuj
 
 A beautiful, mobile-friendly web app for wedding guests to upload photos directly to Google Drive. Single tap, fully anonymous.
 
