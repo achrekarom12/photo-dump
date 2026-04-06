@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "James & Anna — Share Your Moments",
-  description: "Upload your photos from James & Anna's wedding celebration — April 19, 2026",
+  title: "Aarti & Anuj — Share Your Moments",
+  description: "Upload your photos from Aarti & Anuj's wedding celebration — April 19, 2026",
 };
 
 export const viewport: Viewport = {
