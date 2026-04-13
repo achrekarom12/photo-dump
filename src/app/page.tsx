@@ -1,96 +1,24 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import coupleImg from "./assets/couple.png";
 
 type UploadState = "idle" | "uploading" | "success" | "error";
-
-function StarDivider() {
-  return (
-    <div className="flex items-center gap-3 my-4">
-      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#a855f7] to-transparent opacity-50" />
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-[#a855f7]">
-        <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z" fill="currentColor" opacity="0.8" />
-        <circle cx="12" cy="12" r="3" fill="currentColor" />
-      </svg>
-      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#a855f7] to-transparent opacity-50" />
-    </div>
-  );
-}
-
-function FlowerPetals() {
-  const [petals, setPetals] = useState<{id: number, left: string, delay: string, duration: string, size: number, opacity: number, rotation: number}[]>([]);
-
-  useEffect(() => {
-    setPetals(
-      Array.from({ length: 18 }, (_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        delay: `${Math.random() * 10}s`,
-        duration: `${10 + Math.random() * 15}s`,
-        size: 15 + Math.random() * 20,
-        opacity: 0.1 + Math.random() * 0.4,
-        rotation: Math.random() * 360,
-      }))
-    );
-  }, []);
-
-  if (petals.length === 0) return null;
-
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {petals.map((p) => (
-        <svg
-          key={p.id}
-          className="floral-petal absolute text-[#fbcfe8]"
-          style={{
-            left: p.left,
-            animationDelay: p.delay,
-            animationDuration: p.duration,
-            opacity: p.opacity,
-            width: p.size,
-            height: p.size,
-            transform: `rotate(${p.rotation}deg)`,
-          }}
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path d="M12 2C9.5 2 7 6 7 12C7 18 9.5 22 12 22C14.5 22 17 18 17 12C17 6 14.5 2 12 2Z" opacity="0.6"/>
-          <path d="M22 12C22 9.5 18 7 12 7C6 7 2 9.5 2 12C2 14.5 6 17 12 17C18 17 22 14.5 22 12Z" opacity="0.6"/>
-          <circle cx="12" cy="12" r="3" fill="#a855f7" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-function SuccessCheck() {
-  return (
-    <div className="fade-in-up flex flex-col items-center gap-4">
-      <div className="w-20 h-20 rounded-full bg-[#5eead4]/20 flex items-center justify-center border border-[#5eead4]/30 shadow-[0_0_15px_rgba(94,234,212,0.2)]">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-          <circle cx="20" cy="20" r="18" stroke="#0d9488" strokeWidth="2" opacity="0.5" />
-          <path
-            d="M12 20L18 26L28 14"
-            stroke="#5eead4"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="check-animate"
-          />
-        </svg>
-      </div>
-      <p className="text-[#5eead4] font-medium text-lg">Photos shared!</p>
-      <p className="text-[#fdfcff]/60 text-sm">Thank you for capturing these moments</p>
-    </div>
-  );
-}
 
 export default function Home() {
   const [state, setState] = useState<UploadState>("idle");
   const [progress, setProgress] = useState(0);
   const [fileCount, setFileCount] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
+  const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleShare = useCallback(() => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, []);
 
   const handleUpload = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -154,53 +82,69 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative flex flex-col min-h-dvh">
-      <FlowerPetals />
+    <div className="flex flex-col min-h-screen">
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-outline/30">
+        <nav className="flex justify-center items-center px-8 h-20 w-full max-w-none">
+          <h1 className="text-xl font-['Noto_Serif'] font-bold text-primary tracking-[0.2em] uppercase mx-auto">Aarti & Anuj</h1>
+        </nav>
+      </header>
 
-      {/* Top border */}
-      <div className="w-full h-2 bg-gradient-to-r from-[#a855f7]/20 via-[#fbcfe8]/30 to-[#a855f7]/20" />
+      <main className="flex-1 pt-20">
+        {/* Hero Section - Centered & Minimal */}
+        <section className="relative pt-8 pb-16 px-6">
+          <div className="absolute inset-0 minimal-texture pointer-events-none"></div>
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <div className="mb-6 inline-block">
+              <div className="w-12 h-[1px] bg-secondary/40 mx-auto mb-4"></div>
+              <span className="text-secondary font-medium text-xs tracking-[0.3em] uppercase">April 19, 2026</span>
+            </div>
 
-      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12">
-        {/* Decorative frame top */}
-        <div className="flex items-center gap-2 mb-2 text-[#a855f7]/60">
-          <svg width="40" height="20" viewBox="0 0 40 20" fill="none">
-            <polyline points="0,10 10,0 20,10 10,20" fill="currentColor" opacity="0.4" />
-          </svg>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 1L7.5 4.5L11 6L7.5 7.5L6 11L4.5 7.5L1 6L4.5 4.5L6 1Z" fill="currentColor" />
-          </svg>
-          <svg width="40" height="20" viewBox="0 0 40 20" fill="none" className="scale-x-[-1]">
-             <polyline points="0,10 10,0 20,10 10,20" fill="currentColor" opacity="0.4" />
-          </svg>
-        </div>
+            <h2 className="serif-display text-5xl md:text-7xl text-primary leading-tight mb-10">
+              Share the <span className="italic font-normal">Magic</span>
+            </h2>
 
-        {/* Names */}
-        <h1
-          className="parisienne-regular text-6xl sm:text-7xl text-[#fdfcff] tracking-wide text-center drop-shadow-md"
-        >
-          Aarti{" "}
-          <span className="text-4xl sm:text-5xl text-[#fbcfe8] drop-shadow-[0_0_8px_rgba(251,207,232,0.6)] px-2">&</span>{" "}
-          Anuj
-        </h1>
+            <div className="max-w-xl mx-auto mb-16">
+              <p className="text-on-surface-variant text-lg leading-relaxed font-light">
+                Help us preserve the memories from our special day. Your perspective makes our story beautiful.
+              </p>
+            </div>
 
-        {/* Date */}
-        <p className="mt-4 text-sm sm:text-base tracking-[0.3em] uppercase text-[#fdfcff]/50 font-light">
-          April 19, 2026
-        </p>
+            <div className="max-w-3xl mx-auto mb-20 rounded-lg overflow-hidden shadow-sm group">
+              <img
+                src={coupleImg.src}
+                alt="Indian couple in traditional wedding attire"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+            </div>
 
-        <StarDivider />
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <button
+                onClick={() => {
+                  const section = document.getElementById('upload-section');
+                  section?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="bg-primary text-on-primary px-12 py-5 rounded-lg flex items-center justify-center gap-3 transition-all duration-300 hover:bg-primary/90 hover:translate-y-[-2px]"
+              >
+                <span className="font-bold tracking-[0.1em] uppercase text-xs">Upload Memories</span>
+              </button>
+            </div>
+          </div>
+        </section>
 
-        {/* Subtitle */}
-        <p
-          className="text-lg sm:text-xl text-[#fdfcff]/70 text-center max-w-xs"
-        >
-          Share your moments from our special day
-        </p>
+        {/* Instructions & Upload */}
+        <section id="upload-section" className="py-12 px-6">
+          <div className="max-w-4xl mx-auto">
+            {/* Simplified Instruction Line */}
+            <div className="text-center mb-10">
+              <p className="serif-display text-2xl text-primary font-light italic">
+                &quot;High resolution, candid moments, effortlessly shared.&quot;
+              </p>
+              <div className="w-16 h-[1px] bg-secondary/30 mx-auto mt-8"></div>
+            </div>
 
-        {/* Upload Area */}
-        <div className="mt-10 w-full max-w-sm">
-          {state === "idle" && (
-            <div className="fade-in-up">
+            {/* Centered Upload Area */}
+            <div className="max-w-2xl mx-auto relative min-h-[360px]">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -209,76 +153,95 @@ export default function Home() {
                 className="hidden"
                 onChange={(e) => handleUpload(e.target.files)}
               />
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="upload-pulse w-full py-5 px-8 rounded-2xl bg-gradient-to-br from-[#a855f7] to-[#7e22ce] text-white font-medium text-lg shadow-[0_0_20px_rgba(168,85,247,0.3)] border border-[#a855f7]/50 active:scale-95 transition-transform"
-              >
-                <div className="flex items-center justify-center gap-3 drop-shadow-md">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <polyline points="21 15 16 10 5 21" />
-                  </svg>
-                  Share Your Photos
-                </div>
-              </button>
-              <p className="text-center text-xs text-[#fdfcff]/40 mt-3">
-                Tap to select photos from your gallery
-              </p>
-            </div>
-          )}
 
-          {state === "uploading" && (
-            <div className="fade-in-up flex flex-col items-center gap-4">
-              <div className="w-full bg-[#090014] border border-[#a855f7]/30 rounded-full h-3 overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]">
+              {state === "idle" && (
                 <div
-                  className="h-full progress-shimmer rounded-full transition-all duration-300"
-                  style={{ width: `${Math.max(progress, 5)}%` }}
-                />
-              </div>
-              <p className="text-[#fdfcff]/70 text-sm">
-                Uploading {fileCount} {fileCount === 1 ? "photo" : "photos"}... {progress}%
-              </p>
-            </div>
-          )}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="fade-in-up border border-outline bg-surface-container-low rounded-xl p-16 text-center group cursor-pointer transition-all duration-500 hover:border-secondary/40 hover:bg-white absolute inset-0 flex flex-col justify-center items-center"
+                >
+                  <h4 className="serif-display text-2xl text-primary mb-4 font-light">Select your photos to share</h4>
+                  <p className="text-on-surface-variant text-sm mb-12 font-light">PNG, JPEG, or HEIC files up to 25MB each</p>
+                  <button className="border border-primary text-primary px-10 py-4 rounded-lg font-bold text-[10px] tracking-[0.2em] uppercase hover:bg-primary hover:text-on-primary transition-all duration-300">
+                    Choose Files
+                  </button>
+                </div>
+              )}
 
-          {state === "success" && <SuccessCheck />}
+              {state === "uploading" && (
+                <div className="fade-in-up border border-outline bg-surface-container-low rounded-xl p-16 text-center flex flex-col items-center justify-center gap-8 absolute inset-0">
+                  <div className="w-full max-w-sm bg-surface/50 border border-outline/50 rounded-full h-3 overflow-hidden shadow-inner">
+                    <div
+                      className="h-full progress-shimmer rounded-full transition-all duration-300"
+                      style={{ width: `${Math.max(progress, 5)}%` }}
+                    />
+                  </div>
+                  <p className="text-on-surface-variant text-sm font-light">
+                    Uploading {fileCount} {fileCount === 1 ? "photo" : "photos"}... {progress}%
+                  </p>
+                </div>
+              )}
 
-          {state === "error" && (
-            <div className="fade-in-up flex flex-col items-center gap-3">
-              <div className="w-16 h-16 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="15" y1="9" x2="9" y2="15" />
-                  <line x1="9" y1="9" x2="15" y2="15" />
-                </svg>
-              </div>
-              <p className="text-red-400 text-sm text-center">{errorMsg}</p>
-              <button
-                onClick={() => setState("idle")}
-                className="text-[#fbcfe8] hover:text-[#a855f7] transition-colors underline text-sm"
-              >
-                Try again
-              </button>
+              {state === "success" && (
+                <div className="fade-in-up border border-outline bg-surface-container-low rounded-xl p-16 text-center flex flex-col items-center justify-center gap-6 absolute inset-0">
+                  <div className="w-20 h-20 rounded-full bg-primary/5 flex items-center justify-center border border-primary/10">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                      <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="2" className="text-primary/20" />
+                      <path
+                        d="M12 20L18 26L28 14"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-primary check-animate"
+                      />
+                    </svg>
+                  </div>
+                  <h4 className="serif-display text-2xl text-primary font-light">Photos shared!</h4>
+                  <p className="text-on-surface-variant text-sm font-light">Thank you for adding to our story.</p>
+                </div>
+              )}
+
+              {state === "error" && (
+                <div className="fade-in-up border border-error/30 bg-error-container/20 rounded-xl p-16 text-center flex flex-col items-center justify-center gap-6 absolute inset-0">
+                  <div className="w-16 h-16 rounded-full bg-error/10 border border-error/20 flex items-center justify-center">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-error"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  </div>
+                  <p className="text-error text-sm text-center font-medium">{errorMsg}</p>
+                  <button
+                    onClick={() => setState("idle")}
+                    className="mt-2 text-primary font-bold tracking-[0.1em] uppercase text-xs hover:text-primary/80 transition-all underline"
+                  >
+                    Try again
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+
+          {/* Share Button */}
+          <div className="text-center mt-12">
+            <button
+              onClick={handleShare}
+              className="border border-primary text-primary px-10 py-4 rounded-lg flex items-center justify-center gap-2 mx-auto transition-all duration-300 hover:bg-primary hover:text-on-primary"
+            >
+              {copied ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              )}
+              <span className="font-bold tracking-[0.1em] uppercase text-xs">{copied ? "Link Copied!" : "Share this page"}</span>
+            </button>
+          </div>
+        </section>
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 pb-8 pt-4 text-center">
-        <StarDivider />
-        <p className="text-[#fdfcff]/40 text-xs tracking-wide flex items-center justify-center gap-2">
-          Made with
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#a855f7" className="drop-shadow-[0_0_4px_rgba(168,85,247,0.5)]">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-          </svg>
-          for Aarti & Anuj
-        </p>
+      <footer className="w-full py-20 px-8 border-t border-outline/30 mt-auto">
+        <div className="flex flex-col items-center gap-10 w-full text-center">
+          <div className="font-['Noto_Serif'] italic text-primary text-2xl">Aarti & Anuj</div>
+          <p className="font-['Manrope'] text-[10px] tracking-[0.1em] uppercase text-on-surface-variant opacity-60">With Love | 2026</p>
+        </div>
       </footer>
-
-      {/* Bottom border */}
-      <div className="w-full h-2 bg-gradient-to-r from-[#a855f7]/20 via-[#fbcfe8]/30 to-[#a855f7]/20" />
     </div>
   );
 }
