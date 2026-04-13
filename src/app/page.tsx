@@ -204,7 +204,7 @@ export default function Home() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*,video/*"
+                accept="image/*"
                 multiple
                 className="hidden"
                 onChange={(e) => handleUpload(e.target.files)}
@@ -223,7 +223,7 @@ export default function Home() {
                 </div>
               </button>
               <p className="text-center text-xs text-[#fdfcff]/40 mt-3">
-                Tap to select photos or videos from your gallery
+                Tap to select photos from your gallery
               </p>
             </div>
           )}
