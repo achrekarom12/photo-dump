@@ -99,28 +99,42 @@ export default function Home() {
     setFileCount(files.length);
     setProgress(0);
 
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
-
     try {
-      const xhr = new XMLHttpRequest();
-      xhr.upload.addEventListener("progress", (e) => {
-        if (e.lengthComputable) {
-          setProgress(Math.round((e.loaded / e.total) * 100));
-        }
-      });
+      const totalFiles = files.length;
+      let completedFiles = 0;
 
-      await new Promise<void>((resolve, reject) => {
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) resolve();
-          else reject(new Error(xhr.responseText || "Upload failed"));
-        };
-        xhr.onerror = () => reject(new Error("Network error"));
-        xhr.open("POST", "/api/upload");
-        xhr.send(formData);
-      });
+      for (let i = 0; i < totalFiles; i++) {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append("files", file);
+
+        await new Promise<void>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          
+          xhr.upload.addEventListener("progress", (e) => {
+            if (e.lengthComputable) {
+              const currentFileProgress = e.loaded / e.total;
+              const overallProgress = Math.round(((completedFiles + currentFileProgress) / totalFiles) * 100);
+              setProgress(overallProgress);
+            }
+          });
+
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve();
+            } else {
+              reject(new Error(xhr.responseText || "Upload failed"));
+            }
+          };
+          
+          xhr.onerror = () => reject(new Error("Network error"));
+          xhr.open("POST", "/api/upload");
+          xhr.send(formData);
+        });
+
+        completedFiles++;
+        setProgress(Math.round((completedFiles / totalFiles) * 100));
+      }
 
       setState("success");
       setTimeout(() => {
