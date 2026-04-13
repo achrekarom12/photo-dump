@@ -14,7 +14,7 @@ A beautiful, mobile-friendly web app for wedding guests to upload photos directl
 
 ### 2. Google Drive Setup
 
-1. Create a folder in Google Drive (e.g., "James & Anna Wedding Photos")
+1. Create a folder in Google Drive (e.g., "Aarti & Anuj Wedding Photos")
 2. Right-click the folder > Share > share it with the service account email (e.g., `your-sa@project.iam.gserviceaccount.com`) with **Editor** access
 3. Copy the folder ID from the URL: `https://drive.google.com/drive/folders/THIS_IS_THE_FOLDER_ID`
 

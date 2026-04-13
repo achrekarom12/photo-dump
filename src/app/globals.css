@@ -1,66 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 
 :root {
-  --blush: #f5e6e0;
-  --rose: #d4a0a0;
-  --deep-rose: #c27878;
-  --sage: #a8b5a0;
-  --deep-sage: #7a8c6e;
-  --cream: #faf7f2;
-  --gold: #c9a96e;
-  --dark: #3d3232;
+  --lavender: #e9d5ff;
+  --violet: #a855f7;
+  --deep-violet: #7e22ce;
+  --teal: #5eead4;
+  --deep-teal: #0d9488;
+  --background: #090014;
+  --foreground: #fdfcff;
+  --accent: #fbcfe8;
 }
 
 @theme inline {
-  --color-blush: var(--blush);
-  --color-rose: var(--rose);
-  --color-deep-rose: var(--deep-rose);
-  --color-sage: var(--sage);
-  --color-deep-sage: var(--deep-sage);
-  --color-cream: var(--cream);
-  --color-gold: var(--gold);
-  --color-dark: var(--dark);
+  --color-lavender: var(--lavender);
+  --color-violet: var(--violet);
+  --color-deep-violet: var(--deep-violet);
+  --color-teal: var(--teal);
+  --color-deep-teal: var(--deep-teal);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
 }
 
 body {
-  background: var(--cream);
-  color: var(--dark);
-  font-family: 'Inter', sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Poppins', sans-serif;
+  position: relative;
 }
 
-/* Floral corner decorations */
-.floral-corner-tl::before,
-.floral-corner-tr::before,
-.floral-corner-bl::before,
-.floral-corner-br::before {
+body::before {
   content: '';
   position: fixed;
-  width: 180px;
-  height: 180px;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: 
+    radial-gradient(circle at 15% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 100%, rgba(126, 34, 206, 0.15) 0%, transparent 40%);
+  z-index: -1;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.15;
 }
 
 /* Upload button pulse animation */
 @keyframes gentle-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 160, 160, 0.4); }
-  50% { transform: scale(1.02); box-shadow: 0 0 0 20px rgba(212, 160, 160, 0); }
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+  50% { transform: scale(1.02); box-shadow: 0 0 0 20px rgba(168, 85, 247, 0); }
 }
 
 .upload-pulse {
   animation: gentle-pulse 3s ease-in-out infinite;
 }
 
-/* Petal fall animation */
-@keyframes petal-fall {
-  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+/* Floral fall animation */
+@keyframes petal-drift {
+  0% { transform: translateY(-10vh) translateX(0) scale(0.8) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(110vh) translateX(50px) scale(1.2) rotate(360deg); opacity: 0; }
 }
 
-.petal {
-  animation: petal-fall linear infinite;
+.floral-petal {
+  animation: petal-drift linear infinite;
 }
 
 /* Success checkmark */
@@ -92,7 +95,121 @@ body {
 }
 
 .progress-shimmer {
-  background: linear-gradient(90deg, var(--rose) 0%, var(--gold) 50%, var(--rose) 100%);
+  background: linear-gradient(90deg, var(--deep-violet) 0%, var(--accent) 50%, var(--deep-violet) 100%);
   background-size: 200% 100%;
   animation: progress-shimmer 1.5s ease-in-out infinite;
+}
+
+.poppins-thin {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.poppins-extralight {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-extrabold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.poppins-black {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.poppins-thin-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.poppins-extralight-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.poppins-light-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.poppins-regular-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.poppins-medium-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poppins-semibold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.poppins-bold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.parisienne-regular {
+  font-family: "Parisienne", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
