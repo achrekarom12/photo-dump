@@ -3,6 +3,24 @@ import { google } from "googleapis";
 import { Readable } from "stream";
 
 function getAuth() {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
+
+  if (clientId && clientSecret && refreshToken) {
+    const oauth2Client = new google.auth.OAuth2(
+      clientId,
+      clientSecret,
+      "https://developers.google.com/oauthplayground"
+    );
+
+    oauth2Client.setCredentials({
+      refresh_token: refreshToken,
+    });
+
+    return oauth2Client;
+  }
+
   const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || "{}");
   return new google.auth.GoogleAuth({
     credentials,
@@ -50,6 +68,7 @@ export async function POST(request: NextRequest) {
           mimeType: file.type,
           body: stream,
         },
+        supportsAllDrives: true,
         fields: "id,name",
       });
 
